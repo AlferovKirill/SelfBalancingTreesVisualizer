@@ -3,11 +3,11 @@ name: Continuous Integration
 on:
   push:
     branches:
-    - master
+    - main
 
   pull_request:
     branches:
-    - master
+    - main
 
 jobs:
   lint:
@@ -34,12 +34,8 @@ jobs:
 
     runs-on: ubuntu-24.04
 
-    # To enable coverage, delete the last line from the conditional below and
-    # edit the "<name>" placeholder to your GitHub name.
-    # If you do not wish to use codecov, then simply delete this job from the
-    # workflow.
-    if: github.repository_owner == '<name>'
-      && false
+    if: github.repository_owner == 'AlferovKirill'
+		&& false
 
     steps:
     - uses: actions/checkout@v4
@@ -74,11 +70,20 @@ jobs:
     - name: Process coverage info
       run: cmake --build build/coverage -t coverage
 
-    - name: Submit to codecov.io
-      uses: codecov/codecov-action@v4
+    - name: Generate HTML report
+      run: genhtml build/coverage/coverage.info --output-directory build/coverage/html
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v4
       with:
-        file: build/coverage/coverage.info
-        token: ${{ secrets.CODECOV_TOKEN }}
+        name: html-coverage-report
+        path: build/coverage/html/
+
+    #- name: Submit to codecov.io
+    #  uses: codecov/codecov-action@v4
+    #  with:
+    #    file: build/coverage/coverage.info
+    #    token: ${{ secrets.CODECOV_TOKEN }}
 
   sanitize:
     needs: [lint]
@@ -183,21 +188,9 @@ jobs:
 
     runs-on: ubuntu-24.04
 
-    # To enable, first you have to create an orphaned gh-pages branch:
-    #
-    #    git switch --orphan gh-pages
-    #    git commit --allow-empty -m "Initial commit"
-    #    git push -u origin gh-pages
-    #
-    # Edit the <name> placeholder below to your GitHub name, so this action
-    # runs only in your repository and no one else's fork. After these, delete
-    # this comment and the last line in the conditional below.
-    # If you do not wish to use GitHub Pages for deploying documentation, then
-    # simply delete this job similarly to the coverage one.
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
       && github.event_name == 'push'
-      && github.repository_owner == '<name>'
-      && false
+      && github.repository_owner == 'AlferovKirill'
 
     permissions:
       contents: write
