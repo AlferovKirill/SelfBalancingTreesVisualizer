@@ -102,6 +102,18 @@ Note that if your conan profile does not specify the same compiler, standard
 level, build type and runtime library as CMake, then that could potentially
 cause issues. See the link above for profiles documentation.
 
+Also, keep in mind that when installing conan, you need to create a correct profile. 
+By default, it is in Release mode.
+
+> [!WARNING] Attention
+> When you first run the conan for this project, you may need to download
+> system dependencies. To do this, modify the previous command and run it as
+> follows
+
+```sh
+conan install . -s build_type=Debug -b missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
+```
+
 [conan]: https://conan.io/
 [profile]: https://docs.conan.io/2/reference/config_files/profiles.html
 
