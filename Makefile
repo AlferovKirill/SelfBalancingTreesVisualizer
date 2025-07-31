@@ -1,3 +1,6 @@
+# Пути и переменные
+TRANSLATIONS := assets/translations
+
 # Основные цели
 .PHONY: all
 all: release
@@ -31,3 +34,7 @@ docs:
 clang-format:	
 	@cmake -D FORMAT_COMMAND=clang-format-18 -D FIX=YES -P cmake/lint.cmake
 
+# Обновление существующих файлов переводов
+.PHONY: update_translations
+update_translations:
+	@lupdate . -locations none -ts $(TRANSLATIONS)/*.ts

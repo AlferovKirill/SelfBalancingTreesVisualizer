@@ -17,14 +17,14 @@ include(cmake/variables.cmake)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Quick QuickControls2 LinguistTools)
 
+set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 file(GLOB_RECURSE LIB_SOURCES "source/*.cpp")
 list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/source/main.cpp")
 
-add_library(SelfBalancingTreesVisualizer_lib OBJECT
-    ${LIB_SOURCES}
-)
+add_library(SelfBalancingTreesVisualizer_lib OBJECT ${LIB_SOURCES})
 
 target_include_directories(SelfBalancingTreesVisualizer_lib ${warning_guard} PUBLIC "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>")
 
@@ -55,15 +55,17 @@ set_target_properties(SelfBalancingTreesVisualizer_exe PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-# ---- Declare QML modules ----
+# ---- Declare QML modules and assets ----
 
-file(GLOB_RECURSE QML_PAGES_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" CONFIGURE_DEPENDS "ui/Pages/*.qml")
+add_subdirectory(assets)
+
+file(GLOB_RECURSE QML_UI_FILES RELATIVE "${CMAKE_SOURCE_DIR}" CONFIGURE_DEPENDS "qml/ui/*.qml")
 
 qt_add_qml_module(SelfBalancingTreesVisualizer_exe
     URI app
     RESOURCE_PREFIX /
     VERSION 1.0
-    QML_FILES ${QML_PAGES_FILES}
+    QML_FILES ${QML_UI_FILES}
 )
 
 # ---- Install rules ----

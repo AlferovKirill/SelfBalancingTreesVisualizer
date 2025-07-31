@@ -47,6 +47,13 @@ ApplicationWindow {
             color: "red"
             width: parent.width
             height: parent.height
+
+            Image {
+                source: "qrc:/images/ForestGreenPlantIcon.svg"
+
+                width: 60
+                height: 60
+            }
         }
     }
     Component {
@@ -55,6 +62,13 @@ ApplicationWindow {
             color: "green"
             width: parent.width
             height: parent.height
+
+            Image {
+                source: "qrc:/images/forest-green-plant-icon.png"
+
+                width: 60
+                height: 60
+            }
         }
     }
     Component {
