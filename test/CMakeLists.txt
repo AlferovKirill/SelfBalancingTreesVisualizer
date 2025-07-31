@@ -4,22 +4,13 @@
 
 project(SelfBalancingTreesVisualizerTests LANGUAGES CXX)
 
-# ---- Dependencies ----
-
-find_package(Catch2 REQUIRED)
-include(Catch)
-
 # ---- Tests ----
 
 add_executable(SelfBalancingTreesVisualizer_test source/SelfBalancingTreesVisualizer_test.cpp)
-target_link_libraries(
-    SelfBalancingTreesVisualizer_test PRIVATE
-    SelfBalancingTreesVisualizer_lib
-    Catch2::Catch2WithMain
-)
+target_link_libraries(SelfBalancingTreesVisualizer_test PRIVATE SelfBalancingTreesVisualizer_lib)
 target_compile_features(SelfBalancingTreesVisualizer_test PRIVATE cxx_std_17)
 
-catch_discover_tests(SelfBalancingTreesVisualizer_test)
+add_test(NAME SelfBalancingTreesVisualizer_test COMMAND SelfBalancingTreesVisualizer_test)
 
 # ---- End-of-file commands ----
 
