@@ -41,7 +41,7 @@ the project:
     {
       "name": "dev",
       "binaryDir": "${sourceDir}/build/dev",
-      "inherits": ["dev-mode", "conan", "ci-<os>"],
+      "inherits": ["dev-mode", "ci-<os>"],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
@@ -86,36 +86,6 @@ in the terminal.
 > Studio you have to set the option `Never run configure step automatically`
 > in `Tools > Options > CMake` **prior to opening the project**, after which
 > you can manually configure using `Project > Configure Cache`.
-
-### Dependency manager
-
-The above preset will make use of the [conan][conan] dependency manager. After
-installing it, make sure you have a [Conan profile][profile] setup, then
-download the dependencies and generate the necessary CMake files by running
-this command in the project root:
-
-```sh
-conan install . -s build_type=Debug -b missing
-```
-
-Note that if your conan profile does not specify the same compiler, standard
-level, build type and runtime library as CMake, then that could potentially
-cause issues. See the link above for profiles documentation.
-
-Also, keep in mind that when installing conan, you need to create a correct profile. 
-By default, it is in Release mode.
-
-> [!WARNING] Attention
-> When you first run the conan for this project, you may need to download
-> system dependencies. To do this, modify the previous command and run it as
-> follows
-
-```sh
-conan install . -s build_type=Debug -b missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
-```
-
-[conan]: https://conan.io/
-[profile]: https://docs.conan.io/2/reference/config_files/profiles.html
 
 ### Configure, build and test
 
