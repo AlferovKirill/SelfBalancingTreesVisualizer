@@ -1,13 +1,15 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
-#include <iostream>
-
-#include "lib.hpp"
+#include "translation_controller.hpp"
 
 auto main(int argc, char *argv[]) -> int {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+
+    TranslationController translation_controller(engine);
+    engine.rootContext()->setContextProperty("translation_controller", &translation_controller);
 
     const QUrl url(QStringLiteral("qrc:/app/qml/ui/Main.qml"));
 
@@ -17,12 +19,9 @@ auto main(int argc, char *argv[]) -> int {
         }
     }, Qt::QueuedConnection);
 
-    engine.addImportPath(":/qml/");
     engine.load(url);
 
-    library lib;
-
-    std::cout << "lib.name = " << lib.name << "\n";
+    translation_controller.initializeSystemLocale();
 
     return QGuiApplication::exec();
 }

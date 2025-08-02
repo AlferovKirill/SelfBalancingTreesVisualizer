@@ -57,8 +57,6 @@ set_target_properties(SelfBalancingTreesVisualizer_exe PROPERTIES
 
 # ---- Declare QML modules and assets ----
 
-add_subdirectory(assets)
-
 file(GLOB_RECURSE QML_UI_FILES RELATIVE "${CMAKE_SOURCE_DIR}" CONFIGURE_DEPENDS "qml/ui/*.qml")
 
 qt_add_qml_module(SelfBalancingTreesVisualizer_exe
@@ -67,6 +65,8 @@ qt_add_qml_module(SelfBalancingTreesVisualizer_exe
     VERSION 1.0
     QML_FILES ${QML_UI_FILES}
 )
+
+add_subdirectory(assets)
 
 # ---- Install rules ----
 
@@ -86,3 +86,10 @@ elseif(NOT PROJECT_IS_TOP_LEVEL)
 endif()
 
 include(cmake/dev-mode.cmake)
+
+# ---- Declare configure file for base cmake variables ----
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/config/base_cmake_variables.h.in
+    ${CMAKE_SOURCE_DIR}/source/config/base_cmake_variables.h
+)
