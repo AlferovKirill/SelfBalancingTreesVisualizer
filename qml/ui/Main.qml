@@ -6,10 +6,14 @@ ApplicationWindow {
     id: root
 
     visible: true
-    width: 400
+
+    width: 800
     height: 600
 
-    title: qsTr("Program")
+    minimumWidth: 196
+    minimumHeight: 128
+
+    title: Qt.application.name
 
     header: TabBar {
         id: tabBar
@@ -29,12 +33,95 @@ ApplicationWindow {
         }
     }
 
+    menuBar: MenuBar {
+        Menu {
+            title: qsTr("File")
+
+            Action {
+                text: qsTr("New");
+                shortcut: StandardKey.New
+            }
+            Action {
+                text: qsTr("Open");
+                shortcut: StandardKey.Open
+            }
+            Action {
+                text: qsTr("Save");
+                shortcut: StandardKey.Save
+            }
+            MenuSeparator {}
+            Action {
+                text: qsTr("Exit");
+                shortcut: StandardKey.Quit;
+                onTriggered: Qt.quit()
+            }
+        }
+        Menu {
+            title: qsTr("Edit")
+            
+            Action {
+                text: qsTr("Redo");
+                shortcut: StandardKey.Redo
+            }
+            Action {
+                text: qsTr("Undo");
+                shortcut: StandardKey.Undo
+            }
+            MenuSeparator {}
+            Action {
+                text: qsTr("Copy");
+                shortcut: StandardKey.Copy
+            }
+            Action {
+                text: qsTr("Paste");
+                shortcut: StandardKey.Paste
+            }
+            Action {
+                text: qsTr("Cut");
+                shortcut: StandardKey.Cut
+            }
+        }
+        Menu {
+            title: qsTr("Settings")
+            
+            Menu {
+                title: qsTr("Language")
+                
+                Repeater {
+                    model: translation_controller.supportedLanguagesList
+                    delegate: MenuItem {
+                        text: modelData
+                        checked: translation_controller.currentLanguage === modelData
+                        checkable: true
+                        
+                        onTriggered: {
+                            translation_controller.setLanguage(modelData)
+                        }
+                    }
+                }
+            }
+        }
+        Menu {
+            title: qsTr("About")
+
+            Action {
+                text: qsTr("Help")
+            }
+            Action {
+                text: qsTr("About program")
+                onTriggered: {
+                    aboutDialog.open()
+                }
+            }
+        }
+    }
+
     footer: Rectangle {
         color: "grey"
-
         height: 48
         width: parent.width
     }
+    
     Loader {
         sourceComponent: tabBar.currentIndex === 0 ? redPage : tabBar.currentIndex === 1 ? greenPage : bluePage
 
@@ -77,6 +164,46 @@ ApplicationWindow {
             color: "blue"
             width: parent.width
             height: parent.height
+        }
+    }
+
+    Dialog {
+        id: aboutDialog
+
+        title: qsTr("About program")
+        standardButtons: Dialog.Ok
+        
+        modal: true
+        anchors.centerIn: Overlay.overlay
+
+        padding: 16
+
+        ColumnLayout {
+            spacing: 8
+            anchors.fill: parent
+
+            Text {
+                text: qsTr("Author: ") + Qt.application.organization
+                Layout.fillWidth: true
+            }
+            Text {
+                text: qsTr("Version: ") + Qt.application.version
+                Layout.fillWidth: true
+            }
+            Text {
+                text: qsTr("Homepage:") + ' <a href="' + Qt.application.domain + '">' + Qt.application.domain + '</a>'
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+
+                Layout.fillWidth: true
+
+                onLinkActivated: function(link) {
+                    Qt.openUrlExternally(link)
+                }
+            }
+            Item {
+                Layout.fillHeight: true
+            }
         }
     }
 }

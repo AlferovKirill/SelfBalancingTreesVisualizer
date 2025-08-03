@@ -1,6 +1,8 @@
 ---
 Language: Cpp
-AccessModifierOffset: -2
+BasedOnStyle: LLVM
+AccessModifierOffset: -4
+AlignTrailingComments: true
 AlignAfterOpenBracket: Align
 AlignArrayOfStructures: None
 AlignConsecutiveAssignments:
@@ -38,9 +40,6 @@ AlignConsecutiveShortCaseStatements:
   AlignCaseColons: false
 AlignEscapedNewlines: DontAlign
 AlignOperands: DontAlign
-AlignTrailingComments:
-  Kind: Never
-  OverEmptyLines: 0
 AllowAllArgumentsOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
@@ -48,7 +47,7 @@ AllowShortBlocksOnASingleLine: Empty
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: Inline
+AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
@@ -63,15 +62,15 @@ BinPackParameters: false
 BitFieldColonSpacing: Both
 BraceWrapping:
   AfterCaseLabel: false
-  AfterClass: true
+  AfterClass: false
   AfterControlStatement: MultiLine
   AfterEnum: true
   AfterExternBlock: true
-  AfterFunction: true
-  AfterNamespace: true
+  AfterFunction: false
+  AfterNamespace: false
   AfterObjCDeclaration: false
-  AfterStruct: true
-  AfterUnion: true
+  AfterStruct: false
+  AfterUnion: false
   BeforeCatch: false
   BeforeElse: false
   BeforeLambdaBody: true
@@ -92,7 +91,7 @@ BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
 BreakStringLiterals: true
-ColumnLimit: 80
+ColumnLimit: 0
 CommentPragmas: '^ IWYU pragma:'
 CompactNamespaces: false
 ConstructorInitializerIndentWidth: 4
@@ -100,6 +99,7 @@ ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
 DerivePointerAlignment: false
 DisableFormat: false
+AllowAllConstructorInitializersOnNextLine: false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: LogicalBlock
 ExperimentalAutoDetectBinPacking: false
@@ -138,7 +138,7 @@ IndentExternBlock: NoIndent
 IndentGotoLabels: true
 IndentPPDirectives: AfterHash
 IndentRequiresClause: true
-IndentWidth: 2
+IndentWidth: 4
 IndentWrappedFunctionNames: false
 InsertBraces: true
 InsertNewlineAtEOF: true
@@ -152,14 +152,14 @@ IntegerLiteralSeparator:
   HexMinDigits: 0
 JavaScriptQuotes: Double
 JavaScriptWrapImports: true
-KeepEmptyLinesAtTheStartOfBlocks: false
+KeepEmptyLinesAtTheStartOfBlocks: true
 KeepEmptyLinesAtEOF: false
 LambdaBodyIndentation: Signature
 LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 1
-NamespaceIndentation: None
+NamespaceIndentation: All
 ObjCBinPackProtocolList: Never
 ObjCBlockIndentWidth: 2
 ObjCBreakBeforeNestedBlockParam: true
@@ -225,7 +225,7 @@ SortJavaStaticImport: Before
 SortUsingDeclarations: LexicographicNumeric
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
-SpaceAfterTemplateKeyword: false
+SpaceAfterTemplateKeyword: true
 SpaceAroundPointerQualifiers: Default
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCaseColon: false

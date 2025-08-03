@@ -2,6 +2,7 @@
 # Enable ALL the things! Except not really
 # misc-non-private-member-variables-in-classes: the options don't do anything
 # modernize-use-nodiscard: too aggressive, attribute is situationally useful
+HeaderFilterRegex: '^source/.*'
 Checks: "*,\
   -google-readability-todo,\
   -altera-*,\
@@ -11,6 +12,9 @@ Checks: "*,\
   -llvm-include-order,\
   -llvmlibc-*,\
   -modernize-use-nodiscard,\
+  -readability-magic-numbers,\
+  -cppcoreguidelines-avoid-magic-numbers,\
+  -bugprone-easily-swappable-parameters,\
   -misc-non-private-member-variables-in-classes"
 WarningsAsErrors: ''
 CheckOptions:
@@ -49,13 +53,13 @@ CheckOptions:
   - key: 'readability-identifier-naming.AbstractClassCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.ClassCase'
-    value: 'lower_case'
+    value: 'CamelCase'
   - key: 'readability-identifier-naming.ClassConstantCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.ClassMemberCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.ClassMethodCase'
-    value: 'lower_case'
+    value: 'camelBack'
   - key: 'readability-identifier-naming.ConstantCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.ConstantMemberCase'
@@ -115,17 +119,17 @@ CheckOptions:
   - key: 'readability-identifier-naming.PrivateMemberPrefix'
     value: 'm_'
   - key: 'readability-identifier-naming.PrivateMethodCase'
-    value: 'lower_case'
+    value: 'camelBack'
   - key: 'readability-identifier-naming.ProtectedMemberCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.ProtectedMemberPrefix'
     value: 'm_'
   - key: 'readability-identifier-naming.ProtectedMethodCase'
-    value: 'lower_case'
+    value: 'camelBack'
   - key: 'readability-identifier-naming.PublicMemberCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.PublicMethodCase'
-    value: 'lower_case'
+    value: 'camelBack'
   - key: 'readability-identifier-naming.ScopedEnumConstantCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.StaticConstantCase'
