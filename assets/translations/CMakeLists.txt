@@ -16,10 +16,9 @@ qt_add_translations(SelfBalancingTreesVisualizer_exe
         -removeidentical
 )
 
-string(REPLACE ";" "\",\n    \"" LANGUAGES_CPP_LIST "${LANGUAGES}")
-set(LANGUAGES_CPP_LIST "\"${LANGUAGES_CPP_LIST}\"")
+string(REPLACE ";" "\",\n    \"" LANGUAGES_LIST "${LANGUAGES}")
+set(LANGUAGES_LIST "\n    \"${LANGUAGES_LIST}\"\n")
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/config/translations_cmake_variables.h.in
-    ${CMAKE_SOURCE_DIR}/source/config/translations_cmake_variables.h
-)
+list(LENGTH LANGUAGES LANGUAGES_COUNT)
+
+include(${CMAKE_SOURCE_DIR}/cmake/config/translations.cmake)

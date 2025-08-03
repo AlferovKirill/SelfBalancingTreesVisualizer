@@ -10,12 +10,14 @@ project(
     LANGUAGES CXX
 )
 
+set(AUTHOR "Alferov Kirill")
+
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
 # ---- Declare library ----
 
-find_package(Qt6 6.2 REQUIRED COMPONENTS Core Quick QuickControls2 LinguistTools)
+find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Quick QuickControls2 LinguistTools)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -32,6 +34,7 @@ target_compile_features(SelfBalancingTreesVisualizer_lib PUBLIC cxx_std_17)
 
 target_link_libraries(SelfBalancingTreesVisualizer_lib PUBLIC
     Qt6::Core
+    Qt6::Gui
     Qt6::Quick
     Qt6::QuickControls2
 )
@@ -54,6 +57,13 @@ set_target_properties(SelfBalancingTreesVisualizer_exe PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+# ---- Declare paths for configure files ----
+
+set(CONFIG_TEMPLATE_DIR ${CMAKE_SOURCE_DIR}/config)
+set(CONFIG_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/source/config)
+
+include(cmake/config/project_description.cmake)
 
 # ---- Declare QML modules and assets ----
 
@@ -86,10 +96,3 @@ elseif(NOT PROJECT_IS_TOP_LEVEL)
 endif()
 
 include(cmake/dev-mode.cmake)
-
-# ---- Declare configure file for base cmake variables ----
-
-configure_file(
-    ${CMAKE_SOURCE_DIR}/config/base_cmake_variables.h.in
-    ${CMAKE_SOURCE_DIR}/source/config/base_cmake_variables.h
-)

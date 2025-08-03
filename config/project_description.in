@@ -1,0 +1,13 @@
+#pragma once
+
+#include <cstddef>
+
+constexpr const char* project_name = "@PROJECT_NAME@";
+constexpr const char* project_version = "@PROJECT_VERSION@";
+constexpr const char* project_homepage_url = "@PROJECT_HOMEPAGE_URL@";
+constexpr const char* project_description = "@PROJECT_DESCRIPTION@";
+constexpr const char* author = "@AUTHOR@";
+
+constexpr size_t major = @PROJECT_VERSION_MAJOR@;
+constexpr size_t minor = @PROJECT_VERSION_MINOR@;
+constexpr size_t patch = @PROJECT_VERSION_PATCH@;

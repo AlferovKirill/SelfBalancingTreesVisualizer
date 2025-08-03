@@ -1,8 +1,0 @@
-#pragma once
-
-#include <unordered_set>
-#include <string>
-
-inline const std::unordered_set<std::string> supported_languages = { //NOLINT
-    @LANGUAGES_CPP_LIST@
-};

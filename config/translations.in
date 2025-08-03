@@ -1,0 +1,5 @@
+#pragma once
+
+#include <array>
+
+constexpr std::array<const char*, @LANGUAGES_COUNT@> supported_languages = { @LANGUAGES_LIST@ };

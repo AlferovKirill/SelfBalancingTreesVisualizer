@@ -3,17 +3,27 @@
 #include <QQmlContext>
 
 #include "translation_controller.hpp"
+#include "config/project_description.h"
 
-auto main(int argc, char *argv[]) -> int {
+auto main(int argc, char* argv[]) -> int {
     QGuiApplication app(argc, argv);
+
+    QGuiApplication::setApplicationName(project_name);
+    QGuiApplication::setApplicationVersion(project_version);
+    QGuiApplication::setOrganizationDomain(project_homepage_url);
+    QGuiApplication::setOrganizationName(author);
+
+    TranslationController translation_controller;
+
     QQmlApplicationEngine engine;
 
-    TranslationController translation_controller(engine);
+    translation_controller.setEngine(&engine);
+
     engine.rootContext()->setContextProperty("translation_controller", &translation_controller);
 
     const QUrl url(QStringLiteral("qrc:/app/qml/ui/Main.qml"));
 
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &obj_url) {
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject* obj, const QUrl& obj_url){
         if (obj == nullptr && url == obj_url) {
             QCoreApplication::exit(-1);
         }

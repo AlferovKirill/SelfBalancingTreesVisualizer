@@ -1,16 +1,13 @@
-#include <QDebug>
-#include <QDir>
-#include <QDirIterator>
 #include <QCoreApplication>
+#include <QDebug>
 
 #include "translation_controller.hpp"
 
-#include "config/translations_cmake_variables.h"
+#include "config/translations.h"
 
-TranslationController::TranslationController(QQmlApplicationEngine& engine, QObject* parent)
+TranslationController::TranslationController(QObject* parent)
     : QObject(parent)
-    , m_engine(engine) {
-}
+    , m_engine(nullptr) {}
 
 void TranslationController::setLanguage(const QString& language) {
     if (m_current_language == language) {
@@ -21,18 +18,24 @@ void TranslationController::setLanguage(const QString& language) {
         m_current_language = language;
         emit languageChanged();
 
-        m_engine.retranslate();
+        if (m_engine != nullptr) {
+            m_engine->retranslate();
+        }
     }
+}
+
+auto TranslationController::setEngine(QQmlApplicationEngine* engine) -> void {
+    m_engine = engine;
 }
 
 auto TranslationController::currentLanguage() const -> QString {
     return m_current_language;
 }
 
-void TranslationController::initializeSystemLocale() {
+auto TranslationController::initializeSystemLocale() -> void {
     QString system_lang = getSystemLanguageCode();
 
-    if (supported_languages.count(system_lang.toStdString()) != 0) {
+    if (getSupportedLanguagesList().contains(system_lang)) {
         setLanguage(system_lang);
     } else {
         setLanguage("en");
