@@ -125,59 +125,61 @@ ApplicationWindow {
             spacing: 8
             anchors.fill: parent
 
+            TextField {
+                id: valueField
+
+                placeholderText: "value (int)"
+                width: 120
+                inputMethodHints: Qt.ImhDigitsOnly
+            }
             Button {
-                text: "click to expandRecursively"
+                text: "Add"
+                enabled: valueField.text.length > 0
                 onClicked: {
-                    treeView.expandRecursively()
+                    flattened_tree_model.append(parseInt(valueField.text))
+                    valueField.text = ""
                 }
             }
-            Text {
-                text: "text " + treeView.rows
+            Item {
                 Layout.fillWidth: true
             }
         }
     }
 
-    TreeView {
-        anchors.fill: parent
-        // The model needs to be a QAbstractItemModel
-        model: tree_view_model
+    ListView {
+        id: list
 
-        delegate: Item {
-            id: treeDelegate
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        
+        model: flattened_tree_model
+        delegate: Rectangle {
+            required property var model
 
-            implicitWidth: padding + label.x + label.implicitWidth + padding
-            implicitHeight: label.implicitHeight * 1.5
+            required property int key
+            required property int sum
+            required property int node_height
+            required property int size
+            required property int top_offset
+            required property int right_offset
 
-            readonly property real indent: 20
-            readonly property real padding: 5
+            width: list.width
+            height: 80
 
-            // Assigned to by TreeView:
-            required property TreeView treeView
-            required property bool isTreeNode
-            required property bool expanded
-            required property int hasChildren
-            required property int depth
-
-            TapHandler {
-                onTapped: treeView.toggleExpanded(row)
-            }
-
-            Text {
-                id: indicator
-                visible: treeDelegate.isTreeNode && treeDelegate.hasChildren
-                x: padding + (treeDelegate.depth * treeDelegate.indent)
-                anchors.verticalCenter: label.verticalCenter
-                text: "▸"
-                rotation: treeDelegate.expanded ? 90 : 0
-            }
-
-            Text {
-                id: label
-                x: padding + (treeDelegate.isTreeNode ? (treeDelegate.depth + 1) * treeDelegate.indent : 0)
-                width: treeDelegate.width - treeDelegate.padding - x
-                clip: true
-                text: model.key
+            RowLayout {
+                spacing: 8
+                anchors.fill: parent
+            
+                Text {
+                    text: key
+                    Layout.fillWidth: true
+                }
+                Button {
+                    text: "x"
+                    onClicked: flattened_tree_model.remove(key)
+                }
             }
         }
     }
@@ -188,37 +190,37 @@ ApplicationWindow {
     //     anchors.fill: parent
     // }
 
-    // Component {
-    //     id: redPage
-    //     Rectangle {
-    //         color: "white"
-    //         width: parent.width
-    //         height: parent.height
-    //     }
-    // }
-    // Component {
-    //     id: greenPage
-    //     Rectangle {
-    //         color: "green"
-    //         width: parent.width
-    //         height: parent.height
+    Component {
+        id: redPage
+        Rectangle {
+            color: "white"
+            width: parent.width
+            height: parent.height
+        }
+    }
+    Component {
+        id: greenPage
+        Rectangle {
+            color: "green"
+            width: parent.width
+            height: parent.height
 
-    //         Image {
-    //             source: "qrc:/images/forest-green-plant-icon.png"
+            Image {
+                source: "qrc:/images/forest-green-plant-icon.png"
 
-    //             width: 60
-    //             height: 60
-    //         }
-    //     }
-    // }
-    // Component {
-    //     id: bluePage
-    //     Rectangle {
-    //         color: "blue"
-    //         width: parent.width
-    //         height: parent.height
-    //     }
-    // }
+                width: 60
+                height: 60
+            }
+        }
+    }
+    Component {
+        id: bluePage
+        Rectangle {
+            color: "blue"
+            width: parent.width
+            height: parent.height
+        }
+    }
 
     Dialog {
         id: aboutDialog

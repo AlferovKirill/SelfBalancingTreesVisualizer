@@ -5,7 +5,8 @@
 #include "translation_controller.hpp"
 #include "config/project_description.h"
 
-#include "avl_tree.hpp"
+// #include "avl_tree.hpp"
+#include "flattened_tree_model.h"
 
 auto main(int argc, char* argv[]) -> int {
     QGuiApplication app(argc, argv);
@@ -16,14 +17,15 @@ auto main(int argc, char* argv[]) -> int {
     QGuiApplication::setOrganizationName(author);
 
     TranslationController translation_controller;
-    AVLTree tree_view_model;
+    // AVLTree tree_view_model;
+    FlattenedTreeModel flattened_tree_model;
 
     QQmlApplicationEngine engine;
 
     translation_controller.setEngine(&engine);
 
     engine.rootContext()->setContextProperty("translation_controller", &translation_controller);
-    engine.rootContext()->setContextProperty("tree_view_model", &tree_view_model);
+    engine.rootContext()->setContextProperty("flattened_tree_model", &flattened_tree_model);
 
     const QUrl url(QStringLiteral("qrc:/app/qml/ui/Main.qml"));
 

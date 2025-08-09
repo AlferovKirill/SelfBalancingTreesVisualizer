@@ -15,6 +15,12 @@ set(AUTHOR "Alferov Kirill")
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
+# ---- Declare project warnings ----
+
+add_library(project_warnings INTERFACE)
+target_compile_options(project_warnings INTERFACE -Wall -Wextra -Wpedantic -Wconversion)
+target_compile_features(project_warnings INTERFACE cxx_std_17)
+
 # ---- Declare library ----
 
 find_package(Qt6 6.4 REQUIRED COMPONENTS Core Gui Quick QuickControls2 LinguistTools)
@@ -30,8 +36,7 @@ add_library(SelfBalancingTreesVisualizer_lib OBJECT ${LIB_SOURCES})
 
 target_include_directories(SelfBalancingTreesVisualizer_lib ${warning_guard} PUBLIC "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>")
 
-target_compile_features(SelfBalancingTreesVisualizer_lib PUBLIC cxx_std_17)
-
+target_link_libraries(SelfBalancingTreesVisualizer_lib PRIVATE project_warnings)
 target_link_libraries(SelfBalancingTreesVisualizer_lib PUBLIC
     Qt6::Core
     Qt6::Gui
@@ -46,8 +51,6 @@ qt_add_executable(SelfBalancingTreesVisualizer_exe source/main.cpp)
 add_executable(SelfBalancingTreesVisualizer::exe ALIAS SelfBalancingTreesVisualizer_exe)
 
 set_property(TARGET SelfBalancingTreesVisualizer_exe PROPERTY OUTPUT_NAME SelfBalancingTreesVisualizer)
-
-target_compile_features(SelfBalancingTreesVisualizer_exe PRIVATE cxx_std_17)
 
 target_link_libraries(SelfBalancingTreesVisualizer_exe PRIVATE SelfBalancingTreesVisualizer_lib)
 
