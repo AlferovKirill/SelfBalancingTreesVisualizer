@@ -17,7 +17,7 @@ include(cmake/variables.cmake)
 
 # ---- Declare library ----
 
-find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Quick QuickControls2 LinguistTools)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Core Gui Quick QuickControls2 LinguistTools)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)

@@ -15,6 +15,8 @@ Checks: "*,\
   -readability-magic-numbers,\
   -cppcoreguidelines-avoid-magic-numbers,\
   -bugprone-easily-swappable-parameters,\
+  -llvm-else-after-return,\
+  -readability-else-after-return,\
   -misc-non-private-member-variables-in-classes"
 WarningsAsErrors: ''
 CheckOptions:
@@ -51,7 +53,7 @@ CheckOptions:
     value: 'true'
 # These seem to be the most common identifier styles
   - key: 'readability-identifier-naming.AbstractClassCase'
-    value: 'lower_case'
+    value: 'CamelCase'
   - key: 'readability-identifier-naming.ClassCase'
     value: 'CamelCase'
   - key: 'readability-identifier-naming.ClassConstantCase'
@@ -137,7 +139,7 @@ CheckOptions:
   - key: 'readability-identifier-naming.StaticVariableCase'
     value: 'lower_case'
   - key: 'readability-identifier-naming.StructCase'
-    value: 'lower_case'
+    value: 'CamelCase'
   - key: 'readability-identifier-naming.TemplateParameterCase'
     value: 'CamelCase'
   - key: 'readability-identifier-naming.TemplateTemplateParameterCase'
