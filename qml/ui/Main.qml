@@ -15,24 +15,6 @@ ApplicationWindow {
 
     title: Qt.application.name
 
-    header: TabBar {
-        id: tabBar
-
-        currentIndex: 0
-
-        width: parent.width
-
-        TabButton {
-            text: qsTr("Red")
-        }
-        TabButton {
-            text: qsTr("Green")
-        }
-        TabButton {
-            text: qsTr("Blue")
-        }
-    }
-
     menuBar: MenuBar {
         Menu {
             title: qsTr("File")
@@ -146,80 +128,9 @@ ApplicationWindow {
         }
     }
 
-    ListView {
-        id: list
-
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        
+    CustomTreeView {
+        anchors.centerIn: parent
         model: flattened_tree_model
-        delegate: Rectangle {
-            required property var model
-
-            required property int key
-            required property int sum
-            required property int node_height
-            required property int size
-            required property int top_offset
-            required property int right_offset
-
-            width: list.width
-            height: 80
-
-            RowLayout {
-                spacing: 8
-                anchors.fill: parent
-            
-                Text {
-                    text: key
-                    Layout.fillWidth: true
-                }
-                Button {
-                    text: "x"
-                    onClicked: flattened_tree_model.remove(key)
-                }
-            }
-        }
-    }
-
-    // Loader {
-    //     sourceComponent: tabBar.currentIndex === 0 ? redPage : tabBar.currentIndex === 1 ? greenPage : bluePage
-
-    //     anchors.fill: parent
-    // }
-
-    Component {
-        id: redPage
-        Rectangle {
-            color: "white"
-            width: parent.width
-            height: parent.height
-        }
-    }
-    Component {
-        id: greenPage
-        Rectangle {
-            color: "green"
-            width: parent.width
-            height: parent.height
-
-            Image {
-                source: "qrc:/images/forest-green-plant-icon.png"
-
-                width: 60
-                height: 60
-            }
-        }
-    }
-    Component {
-        id: bluePage
-        Rectangle {
-            color: "blue"
-            width: parent.width
-            height: parent.height
-        }
     }
 
     Dialog {

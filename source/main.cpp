@@ -1,14 +1,16 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSurfaceFormat>
 
 #include "translation_controller.hpp"
 #include "config/project_description.h"
 
-// #include "avl_tree.hpp"
 #include "flattened_tree_model.h"
 
 auto main(int argc, char* argv[]) -> int {
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    
     QGuiApplication app(argc, argv);
 
     QGuiApplication::setApplicationName(project_name);
@@ -17,7 +19,6 @@ auto main(int argc, char* argv[]) -> int {
     QGuiApplication::setOrganizationName(author);
 
     TranslationController translation_controller;
-    // AVLTree tree_view_model;
     FlattenedTreeModel flattened_tree_model;
 
     QQmlApplicationEngine engine;
