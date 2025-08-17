@@ -4,7 +4,14 @@
 
 #include "avl_tree.hpp"
 
-auto AVLTree::insert(key_type key) -> void {
+AVLTree::AVLTree(QObject* parent)
+    : QAbstractListModel(parent) {
+        for (size_t i = 0; i < 15; ++i) {
+            insert(i);
+        }
+    }
+
+void AVLTree::insert(key_type key) {
     if (m_root) {
         auto parent = m_root;
 
@@ -35,14 +42,48 @@ auto AVLTree::insert(key_type key) -> void {
     } else {
         m_root = std::make_shared<Node>(key);
     }
+
+    // just caching and sending signals
+
+    auto prev_size = static_cast<int>(m_flattened_tree_cache.nodes.size());
+    m_flattened_tree_cache = flatten();
+
+    beginInsertRows(QModelIndex(), prev_size, prev_size);
+    endInsertRows();
+
+    if (prev_size > 0) {
+        emit dataChanged(index(0), index(prev_size));
+    }
+
+    emit heightChanged();
+    emit widthChanged();
 }
 
-auto AVLTree::find(key_type key) const -> bool {
+bool AVLTree::find(key_type key) const { // NOLINT(modernize-use-trailing-return-type)
     return static_cast<bool>(findNode(key));
 }
 
-auto AVLTree::remove(key_type key) -> void {
-    remove(findNode(key));
+void AVLTree::remove(key_type key) {
+    auto node = findNode(key);
+
+    if (node) {
+        remove(node);
+
+        // just caching and sending signals
+
+        auto prev_size = static_cast<int>(m_flattened_tree_cache.nodes.size());
+        m_flattened_tree_cache = flatten();
+
+        beginRemoveRows(QModelIndex(), prev_size - 1, prev_size - 1);
+        endRemoveRows();
+        
+        if (prev_size > 1) {
+            emit dataChanged(index(0), index(prev_size - 2));
+        }
+
+        emit heightChanged();
+        emit widthChanged();
+    }
 }
 
 auto AVLTree::max() const -> key_type {
@@ -69,7 +110,11 @@ auto AVLTree::sum(key_type left_key, key_type right_key) -> key_type {
     return interval_sum;
 }
 
-// need try to make it iterative
+auto AVLTree::size() const -> int64_t {
+    return m_root ? m_root->m_size : 0;
+}
+
+// TODO: make it iterative
 auto AVLTree::flatten() const -> FlattenedTreeGuiDto {
     FlattenedTreeGuiDto flattened_tree;
 
@@ -123,6 +168,73 @@ auto AVLTree::flatten() const -> FlattenedTreeGuiDto {
     flattened_tree.width = m_root ? max_horizontal_offset + 1 : 0;
 
     return flattened_tree;
+}
+
+auto AVLTree::rowCount(const QModelIndex& parent) const -> int {
+    if (parent.isValid()) {
+        return 0;
+    }
+
+    return static_cast<int>(m_flattened_tree_cache.nodes.size());
+}
+
+auto AVLTree::data(const QModelIndex& index, int role) const -> QVariant {
+    if (!index.isValid() || index.row() < 0 || index.row() >= static_cast<int>(m_flattened_tree_cache.nodes.size())) {
+        return {};
+    }
+
+    const auto& item = m_flattened_tree_cache.nodes[static_cast<size_t>(index.row())];
+
+    if (role == key_role) {
+        return QVariant::fromValue(item.key);
+    } else if (role == sum_role) {
+        return QVariant::fromValue(item.sum);
+    } else if (role == depth_role) {
+        return QVariant::fromValue(item.depth);
+    } else if (role == horizontal_offset_role) {
+        return QVariant::fromValue(item.horizontal_offset);
+    } else if (role == left_exists_role) {
+        return QVariant::fromValue(item.left.exists);
+    } else if (role == left_depth_role) {
+        return QVariant::fromValue(item.left.depth);
+    } else if (role == left_horizontal_offset_role) {
+        return QVariant::fromValue(item.left.horizontal_offset);
+    } else if (role == right_exists_role) {
+        return QVariant::fromValue(item.right.exists);
+    } else if (role == right_depth_role) {
+        return QVariant::fromValue(item.right.depth);
+    } else if (role == right_horizontal_offset_role) {
+        return QVariant::fromValue(item.right.horizontal_offset);
+    }
+
+    return {};
+}
+
+auto AVLTree::roleNames() const -> QHash<int, QByteArray> {
+    static const QHash<int, QByteArray> role_names = {
+        {key_role, "key"},
+        {sum_role, "sum"},
+        {depth_role, "depth"},
+        {horizontal_offset_role, "horizontal_offset"},
+
+        {left_exists_role, "left_exists"},
+        {left_depth_role, "left_depth"},
+        {left_horizontal_offset_role, "left_horizontal_offset"},
+
+        {right_exists_role, "right_exists"},
+        {right_depth_role, "right_depth"},
+        {right_horizontal_offset_role, "right_horizontal_offset"},
+    };
+
+    return role_names;
+}
+
+auto AVLTree::getHeight() const -> int {
+    return static_cast<int>(m_flattened_tree_cache.height);
+}
+
+auto AVLTree::getWidth() const -> int {
+    return static_cast<int>(m_flattened_tree_cache.width);
 }
 
 auto AVLTree::updateHeuristics(std::shared_ptr<Node> node) -> void {  // NOLINT(performance-unnecessary-value-param)

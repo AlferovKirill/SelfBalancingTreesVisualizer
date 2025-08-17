@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import ui
+
 ApplicationWindow {
     id: root
 
@@ -98,39 +100,19 @@ ApplicationWindow {
         }
     }
 
-    footer: Rectangle {
-        color: "grey"
-        height: 48
-        width: parent.width
-
-        RowLayout {
-            spacing: 8
-            anchors.fill: parent
-
-            TextField {
-                id: valueField
-
-                placeholderText: "value (int)"
-                width: 120
-                inputMethodHints: Qt.ImhDigitsOnly
-            }
-            Button {
-                text: "Add"
-                enabled: valueField.text.length > 0
-                onClicked: {
-                    flattened_tree_model.append(parseInt(valueField.text))
-                    valueField.text = ""
-                }
-            }
-            Item {
-                Layout.fillWidth: true
-            }
-        }
+    footer: ToolsPane {
+        model: treeView.model
     }
 
     CustomTreeView {
-        anchors.centerIn: parent
-        model: flattened_tree_model
+        id: treeView
+
+        model: AVLTree {}
+
+        anchors {
+            fill: parent
+            margins: 4
+        }
     }
 
     Dialog {

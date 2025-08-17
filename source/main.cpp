@@ -6,7 +6,7 @@
 #include "translation_controller.hpp"
 #include "config/project_description.h"
 
-#include "flattened_tree_model.h"
+#include "avl_tree.hpp"
 
 auto main(int argc, char* argv[]) -> int {
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
@@ -18,15 +18,15 @@ auto main(int argc, char* argv[]) -> int {
     QGuiApplication::setOrganizationDomain(project_homepage_url);
     QGuiApplication::setOrganizationName(author);
 
+    qmlRegisterType<AVLTree>("ui", 1, 0, "AVLTree");
+
     TranslationController translation_controller;
-    FlattenedTreeModel flattened_tree_model;
 
     QQmlApplicationEngine engine;
 
     translation_controller.setEngine(&engine);
 
     engine.rootContext()->setContextProperty("translation_controller", &translation_controller);
-    engine.rootContext()->setContextProperty("flattened_tree_model", &flattened_tree_model);
 
     const QUrl url(QStringLiteral("qrc:/app/qml/ui/Main.qml"));
 
