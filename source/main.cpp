@@ -1,17 +1,24 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSurfaceFormat>
 
 #include "translation_controller.hpp"
 #include "config/project_description.h"
 
+#include "avl_tree.hpp"
+
 auto main(int argc, char* argv[]) -> int {
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    
     QGuiApplication app(argc, argv);
 
     QGuiApplication::setApplicationName(project_name);
     QGuiApplication::setApplicationVersion(project_version);
     QGuiApplication::setOrganizationDomain(project_homepage_url);
     QGuiApplication::setOrganizationName(author);
+
+    qmlRegisterType<AVLTree>("ui", 1, 0, "AVLTree");
 
     TranslationController translation_controller;
 

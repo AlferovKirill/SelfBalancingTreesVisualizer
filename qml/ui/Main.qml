@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import ui
+
 ApplicationWindow {
     id: root
 
@@ -14,24 +16,6 @@ ApplicationWindow {
     minimumHeight: 128
 
     title: Qt.application.name
-
-    header: TabBar {
-        id: tabBar
-
-        currentIndex: 0
-
-        width: parent.width
-
-        TabButton {
-            text: qsTr("Red")
-        }
-        TabButton {
-            text: qsTr("Green")
-        }
-        TabButton {
-            text: qsTr("Blue")
-        }
-    }
 
     menuBar: MenuBar {
         Menu {
@@ -116,54 +100,18 @@ ApplicationWindow {
         }
     }
 
-    footer: Rectangle {
-        color: "grey"
-        height: 48
-        width: parent.width
-    }
-    
-    Loader {
-        sourceComponent: tabBar.currentIndex === 0 ? redPage : tabBar.currentIndex === 1 ? greenPage : bluePage
-
-        anchors.fill: parent
+    footer: ToolsPane {
+        model: treeView.model
     }
 
-    Component {
-        id: redPage
-        Rectangle {
-            color: "red"
-            width: parent.width
-            height: parent.height
+    CustomTreeView {
+        id: treeView
 
-            Image {
-                source: "qrc:/images/ForestGreenPlantIcon.svg"
+        model: AVLTree {}
 
-                width: 60
-                height: 60
-            }
-        }
-    }
-    Component {
-        id: greenPage
-        Rectangle {
-            color: "green"
-            width: parent.width
-            height: parent.height
-
-            Image {
-                source: "qrc:/images/forest-green-plant-icon.png"
-
-                width: 60
-                height: 60
-            }
-        }
-    }
-    Component {
-        id: bluePage
-        Rectangle {
-            color: "blue"
-            width: parent.width
-            height: parent.height
+        anchors {
+            fill: parent
+            margins: 4
         }
     }
 

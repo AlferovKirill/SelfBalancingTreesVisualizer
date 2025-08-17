@@ -64,7 +64,7 @@ BraceWrapping:
   AfterCaseLabel: false
   AfterClass: false
   AfterControlStatement: MultiLine
-  AfterEnum: true
+  AfterEnum: false
   AfterExternBlock: true
   AfterFunction: false
   AfterNamespace: false
